@@ -2,7 +2,7 @@ import unittest
 
 from htmlnode import HTMLNode
 
-class TestHTNLNode(unittest.TestCase):
+class TestHTMLNode(unittest.TestCase):
     def test_null_HTMLNode(self):
         node = HTMLNode()
         self.assertEqual(f'{node}', '')
