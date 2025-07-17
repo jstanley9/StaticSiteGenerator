@@ -5,7 +5,7 @@ from leafnode import LeafNode
 class TestLeafNode(unittest.TestCase):
     def test_just_text(self):
         text = "Just some plain old text"
-        node = LeafNode(text)
+        node = LeafNode(None, text)
         self.assertEqual(node.to_html(), text)
 
     def test_None_value(self):
@@ -22,12 +22,12 @@ class TestLeafNode(unittest.TestCase):
         tag = 'a'
         node = LeafNode(tag = tag, value = text, props = href)
         result = node.to_html()
-        self.assertEqual(result, '<a href:"https://somewhat.invalid.www.com">yeah, this link is invalid</a>')
+        self.assertEqual(result, '<a href="https://somewhat.invalid.www.com">yeah, this link is invalid</a>')
 
     def test_a_paragraph(self):
         text = 'Purple People Eater'
         tag = 'p'
-        node = LeafNode(text, tag = tag)
+        node = LeafNode(tag, text)
         result = node.to_html()
         match_html = f'<{tag}>{text}</{tag}>'
         self.assertEqual(result, match_html)

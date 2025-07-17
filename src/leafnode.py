@@ -1,20 +1,16 @@
 from htmlnode import HTMLNode
 
 class LeafNode(HTMLNode):
-    def __init__(self, value, tag = None, props = None):
+    def __init__(self, tag = None, value = None, props = None):
         super().__init__(tag, value, props = props)
 
     def to_html(self):
         if self.value:
-            stuff = []
             if self.tag:
-                stuff = [f'<{self.tag}']
-                if self.props:
-                    stuff.append(self.props_to_html())
-                stuff.append('>')
-                stuff.append(self.value)
-                stuff.append(f'</{self.tag}>')
-                return ''.join(stuff)
+                html_list = [self.tag_open_to_html()]
+                html_list.append(self.value)
+                html_list.append(self.tag_close_to_html())
+                return ''.join(html_list)
 
             return self.value
 

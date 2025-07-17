@@ -9,11 +9,11 @@ class TestHTMLNode(unittest.TestCase):
 
     def test_tag_HTMLSNode(self):
         node = HTMLNode(tag = 'PoundSand')
-        self.assertEqual(f'{node}', ' "tag": "PoundSand"')
+        self.assertEqual(f'{node}', '"tag": "PoundSand"')
 
     def test_value_HTMLSNode(self):
         node = HTMLNode(value = 'Public Domain')
-        self.assertEqual(f'{node}', ' "value": "Public Domain"')
+        self.assertEqual(f'{node}', '"value": "Public Domain"')
 
     def test_children_HTMLSNode(self):
         children = ['tickle', 'me', 'Elmo']
@@ -37,4 +37,4 @@ class TestHTMLNode(unittest.TestCase):
     def test_props(self):
         props = {'path': 'https://chukles.laugh', 'style': ['bold', 'italic']}
         node = HTMLNode('PoundSand', 'Public Domain', props = props)
-        self.assertEqual(node.props_to_html(), ' path:"https://chukles.laugh" style:"[\'bold\', \'italic\']"')
+        self.assertEqual(node.props_to_html(), ' path="https://chukles.laugh" style="[\'bold\', \'italic\']"')
