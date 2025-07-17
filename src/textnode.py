@@ -1,10 +1,10 @@
 from enum import Enum
 
-class InlineText(Enum):
+class TextType(Enum):
     TEXT_PLAIN = "text"
-    BOLD_TEXT = "bold"
-    ITALIC_TEXT = "italic"
-    CODE_TEXT = "code"
+    BOLD = "bold"
+    ITALIC = "italic"
+    CODE = "code"
     LINKS = "links"
     IMAGES = "images"
 
@@ -20,10 +20,3 @@ class TextNode:
     
     def __repr__(self):
         return f"TextNode({self.text}, {self.text_type.value}, {self.url})"
-
-def main():
-    testText = TextNode("sample text", InlineText.BOLD_TEXT, "https:/some.sort.of.url.ddd")
-    print(f"{testText}")
-
-if __name__ == "__main__":
-    main()    
