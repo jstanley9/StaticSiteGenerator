@@ -12,6 +12,8 @@ class HTMLNode:
         properties = ''
         for property, value in self.props.items():
             properties += f' {property}:"{value}"'
+        
+        return properties
 
     def repr(self, key, value):
         if value:
@@ -22,5 +24,5 @@ class HTMLNode:
         representation = ''
         for property_name, value in vars(self).items():
             representation += self.repr(property_name, value)
-            
+
         return representation

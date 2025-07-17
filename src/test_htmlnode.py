@@ -33,3 +33,8 @@ class TestHTNLNode(unittest.TestCase):
         self.assertEqual(node.value, 'Public Domain')
         self.assertListEqual(node.children, children)
         self.assertDictEqual(node.props, props)
+
+    def test_props(self):
+        props = {'path': 'https://chukles.laugh', 'style': ['bold', 'italic']}
+        node = HTMLNode('PoundSand', 'Public Domain', props = props)
+        self.assertEqual(node.props_to_html(), ' path:"https://chukles.laugh" style:"[\'bold\', \'italic\']"')
