@@ -5,7 +5,7 @@ class LeafNode(HTMLNode):
         super().__init__(tag, value, props = props)
 
     def to_html(self):
-        if self.value:
+        if self.value != None:
             if self.tag:
                 html_list = [self.tag_open_to_html()]
                 html_list.append(self.value)
