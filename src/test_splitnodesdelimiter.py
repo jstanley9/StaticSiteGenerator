@@ -63,6 +63,21 @@ class TestTextNodeToHtmlNode(unittest.TestCase):
         expected0 = f'{TextNode('everything is bold', TextType.BOLD)}'
         self.assertEqual(f'{new_nodes[0]}', expected0)
 
+    def test_bold_bold(self):
+        text = '**bold** middle **ending**'
+        node0 = TextNode(text, TextType.TEXT)
+        nodes = [node0]
+        delimiter = '**'
+        new_nodes = split_nodes_delimiter(nodes, delimiter, TextType.BOLD)
+        self.assertEqual(len(new_nodes), 3)
+        expected0 = f'{TextNode('bold', TextType.BOLD)}'
+        self.assertEqual(f'{new_nodes[0]}', expected0)
+        expected1 = f'{TextNode(' middle ', TextType.TEXT)}'
+        self.assertEqual(f'{new_nodes[1]}', expected1)
+        expected2 = f'{TextNode('ending', TextType.BOLD)}'
+        self.assertEqual(f'{new_nodes[2]}', expected2)
+
+
     def test_simple_italic(self):
         text = 'simple *italic* text'
         node0 = TextNode(text, TextType.TEXT)
