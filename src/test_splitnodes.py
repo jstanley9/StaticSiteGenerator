@@ -1,7 +1,7 @@
 import unittest
 from textnode import TextNode, TextType
 
-from splitnodesdelimiter import split_nodes_delimiter
+from splitnodes import split_nodes_delimiter, split_nodes_link, split_nodes_image, text_to_textnodes
 
 
 class TestTextNodeToHtmlNode(unittest.TestCase):
@@ -105,3 +105,57 @@ class TestTextNodeToHtmlNode(unittest.TestCase):
         self.assertEqual(f'{new_nodes[1]}', expected1)
         expected2 = f'{TextNode(' code block', TextType.TEXT)}'
         self.assertEqual(f'{new_nodes[2]}', expected2)
+
+    def test_split_nodes_image(self):
+        init_text = 'This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and another ![second image](https://i.imgur.com/3elNhQu.png)'
+        node =TextNode(init_text, TextType.TEXT)
+        new_nodes = split_nodes_image([node])
+        self.assertEqual(new_nodes[0], TextNode('This is text with an ', TextType.TEXT))
+        self.assertEqual(new_nodes[1], TextNode('image', TextType.IMAGES, 'https://i.imgur.com/zjjcJKZ.png'))
+        self.assertEqual(new_nodes[2], TextNode(' and another ', TextType.TEXT))
+        self.assertEqual(new_nodes[3], TextNode('second image', TextType.IMAGES, 'https://i.imgur.com/3elNhQu.png'))
+        self.assertEqual(len(new_nodes), 4, 'Image nodes not properly split out')
+
+    def test_split_nodes_link(self):
+        init_text = 'This is text with a link [to boot dev](https://www.boot.dev ) and [to youtube](https://www.youtube.com/@bootdotdev)'
+        node = TextNode(init_text, TextType.TEXT)
+        new_nodes = split_nodes_link([node])
+        self.assertEqual(new_nodes[0], TextNode('This is text with a link ', TextType.TEXT))
+        self.assertEqual(new_nodes[1], TextNode('to boot dev', TextType.LINKS, 'https://www.boot.dev'))
+        self.assertEqual(new_nodes[2], TextNode(' and ', TextType.TEXT))
+        self.assertEqual(new_nodes[3], TextNode('to youtube', TextType.LINKS, 'https://i.imgur.com/3elNhQu.png'))
+        self.assertEqual(len(new_nodes), 4, 'Link nodes not properly split')
+
+    def test_split_mixed_images_and_links(self):
+        init_text = 'This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) then a link [to youtube](https://www.youtube.com/@bootdotdev)'
+        node = TextNode(init_text, TextType.TEXT)
+        new_nodes = split_nodes_image([node])
+        new_nodes = split_nodes_link(new_nodes)
+        self.assertEqual(new_nodes[0], TextNode('This is text with an ', TextType.TEXT))
+        self.assertEqual(new_nodes[1], TextNode('image', TextType.IMAGES, 'https://i.imgur.com/zjjcJKZ.png'))
+        self.assertEqual(new_nodes[2], TextNode(' then a link ', TextType.TEXT))
+        self.assertEqual(new_nodes[3], TextNode('to youtube', TextType.LINKS, 'https://i.imgur.com/3elNhQu.png'))
+        self.assertEqual(len(new_nodes), 4, 'Link nodes not properly split')
+
+    def test_text_to_textnodes(self):
+        text = 'This is **text** with an _italic_ word and a `code block` and an ' + \
+               '![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)'
+        nodes = text_to_textnodes(text)
+        self.assertEqual(nodes[0], TextNode('This is ', TextType.TEXT))
+        self.assertEqual(nodes[1], TextNode('text', TextType.BOLD))
+        self.assertEqual(nodes[2], TextNode(' with an ', TextType.TEXT))
+        self.assertEqual(nodes[3], TextNode('italic', TextType.ITALIC))
+        self.assertEqual(nodes[4], TextNode(' word and a ', TextType.TEXT))
+        self.assertEqual(nodes[5], TextNode('code block', TextType.CODE))
+        self.assertEqual(nodes[6], TextNode(' and an ', TextType.TEXT))
+        self.assertEqual(nodes[7], TextNode('obi wan image', TextType.IMAGES))
+        self.assertEqual(nodes[8], TextNode(' and a ', TextType.TEXT))
+        self.assertEqual(nodes[9], TextNode('link', TextType.LINKS))
+        self.assertEqual(len(nodes), 10, 'Expected 10 nodes')
+
+    def test_text_to_textnodes_text_only(self):
+        text = 'This is a simple text string'
+
+        nodes = text_to_textnodes(text)
+        self.assertEqual(nodes[0], TextNode('This is a simple text string', TextType.TEXT))
+        self.assertEqual(len(nodes), 1, 'Expected 1 node')
