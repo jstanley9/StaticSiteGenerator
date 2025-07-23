@@ -1,6 +1,6 @@
 import unittest
-from textnode import TextNode, TextType
 
+from textnode import TextNode, TextType
 from splitnodes import split_nodes_delimiter, split_nodes_link, split_nodes_image, text_to_textnodes
 
 
@@ -155,7 +155,6 @@ class TestTextNodeToHtmlNode(unittest.TestCase):
 
     def test_text_to_textnodes_text_only(self):
         text = 'This is a simple text string'
-
         nodes = text_to_textnodes(text)
         self.assertEqual(nodes[0], TextNode('This is a simple text string', TextType.TEXT))
         self.assertEqual(len(nodes), 1, 'Expected 1 node')
