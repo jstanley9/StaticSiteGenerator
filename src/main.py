@@ -1,8 +1,10 @@
-from textnode import *
+from textnode import TextNode, TextType
+from outpututility import init_public_space
 
 def main():
     print("Started")
-    testText = TextNode("sample text", TextType.BOLD_TEXT, "https:/some.sort.of.url.ddd")
+    init_public_space()
+    testText = TextNode("sample text", TextType.BOLD, "https:/some.sort.of.url.ddd")
     print(testText)
 
 # text = '**stuff**more stuff****antipod**'
