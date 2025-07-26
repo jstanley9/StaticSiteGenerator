@@ -1,12 +1,25 @@
-class HTMLNode:
+class HTMLNode: 
     def __init__(self, tag = None, value = None, children = None, props = None):
         self.tag = tag
         self.value = value
         self.children = children
         self.props = props
 
-    def to_html():
-        raise NotImplemented("ToDo")
+    def to_html(self):
+        html = ''
+        if self.tag:
+            html += self.tag_open_to_html()
+        
+        if self.value:
+            html += self.value
+
+        for child in self.children:
+            html += child.to_html()
+
+        if self.tag:
+            html += self.tag_close_to_html()
+
+        return html;
     
     def props_to_html(self):
         properties = ''
