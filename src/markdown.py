@@ -9,7 +9,7 @@ def markdown_to_blocks(markdown):
     if markdown:
         blocks = markdown.split('\n\n')
         for block in blocks:
-            new_block = block.strip()
+            new_block = block.strip(' ')
             if len(new_block) > 0:
                 new_blocks.append(new_block)
 
@@ -67,9 +67,9 @@ def make_paragraph_nodes(block):
             case TextType.CODE:
                 node = LeafNode('code', value)
             case TextType.LINKS:
-                node = LeafNode('a', value, text_node.props)
+                node = LeafNode('a', value, text_node.get_link_props())
             case TextType.IMAGES:
-                node = LeafNode('img', value, text_node.props)
+                node = LeafNode('img', value, text_node.get_image_props()) 
             case _:
                 node = LeafNode(None, value)
         children.append(node)
@@ -85,25 +85,24 @@ def make_code_node(block):
     return ParentNode('pre', [LeafNode('code', block.strip('`'))])
 
 def make_quote_node(block):
-    return LeafNode('blockquote', ''.join(block.split('>')))
+    return LeafNode('blockquote', str(''.join(block.split('>')).replace('\n', '<br>')))
 
 def make_unordered_node(block):
     items = block.split('- ')
     children = []
     for line_item in items:
         if len(line_item) > 0:
-            children.append(LeafNode('li', line_item.rstrip('\n')))
+            children.append(ParentNode('li', make_paragraph_nodes(line_item.rstrip('\n'))))
 
     return ParentNode('ul', children)
 
 def make_ordered_node(block):
     items = block.split('\n')
-    #print(f'items => {items}')
     children = []
     for line_item in items:
         if len(line_item) > 0:
             index = line_item.find(' ')
-            children.append(LeafNode('li', line_item[index + 1:]))
+            children.append(ParentNode('li', make_paragraph_nodes(line_item[index + 1:])))
 
     return ParentNode('ol', children)
 

@@ -5,7 +5,7 @@ class LeafNode(HTMLNode):
         super().__init__(tag, value, props = props)
 
     def to_html(self):
-        if self.value:
+        if self.value or (self.tag and self.tag == 'img'):
             if self.tag:
                 html_list = [self.tag_open_to_html()]
                 html_list.append(self.value)
@@ -14,4 +14,4 @@ class LeafNode(HTMLNode):
 
             return self.value
 
-        raise ValueError('A "value" is required for a leaf node')
+        raise ValueError(f'A "value" is required for a leaf node')

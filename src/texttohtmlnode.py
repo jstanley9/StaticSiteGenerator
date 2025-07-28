@@ -26,3 +26,12 @@ def text_node_to_html_node(text_node):
             raise Exception(f'Unknown text type "{text_node.text_type}"')
         
     return LeafNode(tag = tag, value = value, props = props)
+
+def extract_title(markdown):
+    HEADING1 = '# '
+    with open(markdown, 'r') as markdown_file:
+        for line in markdown_file:
+            if line.startswith(HEADING1):
+                return line.rstrip()[len(HEADING1):]
+            
+    raise Exception(f'Markdown file: {markdown} is missing heading ("# " => <h1>)')

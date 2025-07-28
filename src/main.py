@@ -1,18 +1,7 @@
 from textnode import TextNode, TextType
-from outpututility import init_public_space
+from generatepage import generate_page
 
 def main():
-    print("Started")
-    init_public_space()
-    testText = TextNode("sample text", TextType.BOLD, "https:/some.sort.of.url.ddd")
-    print(testText)
+    generate_page('./content/index.md', './template.html', './public/index.html')
 
-# text = '**stuff**more stuff****antipod**'
-# flun = text.split('**')
-# print(f'Number sections is {len(flun)}')
-# for sec in flun:
-#     print(f'{sec}[{len(sec)}]')
-# single = 'just a simple string'
-# uno = single.split('**')
-# print(f'{len(uno)}:|{uno[0]}|')
 main()

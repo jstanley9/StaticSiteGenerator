@@ -9,10 +9,17 @@ class TextType(Enum):
     IMAGES = "images"
 
 class TextNode:
-    def __init__(self, text, text_type, url = None):
+    def __init__(self, text, text_type, url = None): 
         self.text = text
         self.text_type = text_type
         self.url = url
+
+    def get_link_props(self):
+        return {'href': self.url}
+    
+    def get_image_props(self):
+        return {'src': self.url, 'alt': self.text}
+
 
     def __eq__(self, other):
         return self.text == other.text and      \
