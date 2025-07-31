@@ -85,7 +85,15 @@ def make_code_node(block):
     return ParentNode('pre', [LeafNode('code', block.strip('`'))])
 
 def make_quote_node(block):
-    return LeafNode('blockquote', str(''.join(block.split('>')).replace('\n', '<br>')))
+    lines = block.split('\n')
+    chopped_lines = []
+    for line in lines:
+        if len(line) > 1:
+            chopped_lines.append(line[2:])
+        else:
+            chopped_lines.append('')
+                        
+    return LeafNode('blockquote', str('<br>'.join(chopped_lines)))
 
 def make_unordered_node(block):
     items = block.split('- ')

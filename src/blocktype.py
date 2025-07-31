@@ -3,7 +3,7 @@ from enum import Enum
 
 CODE_DELIMITER = '```'
 HEADING_DELIMITER = r'^#{1,6} '
-QUOTE_DELIMITER = '>'
+QUOTE_DELIMITER = '> '
 UNORDERED_DELIMITER = '- '
 ORDERED_START_DELIMITER = '1. '
 
@@ -47,7 +47,12 @@ def is_it_code(default_block_type: BlockType, markdowntext: str) -> BlockType:
     return default_block_type
     
 def is_it_quote(default_block_type: BlockType, markdowntext: str) -> BlockType:
-    return do_all_lines_start_with(default_block_type, BlockType.QUOTE, QUOTE_DELIMITER, markdowntext)
+    lines = markdowntext.split('\n')
+    for line in lines:
+        if not (line.startswith(QUOTE_DELIMITER) or \
+                (len(line) == 1 and line == '>')):
+            return default_block_type
+    return BlockType.QUOTE
     
 def is_it_unordered_list(default_block_type: BlockType, markdowntext: str) -> BlockType:
     return do_all_lines_start_with(default_block_type, BlockType.UNORDERED_LIST, UNORDERED_DELIMITER, markdowntext)
@@ -55,7 +60,7 @@ def is_it_unordered_list(default_block_type: BlockType, markdowntext: str) -> Bl
 def do_all_lines_start_with(default_block_type, good_block_type, delimiter, markdowntext):
     lines = markdowntext.split('\n')
     for line in lines:
-        if not line.startswith(delimiter):
+        if not (line.startswith(delimiter)):
             return default_block_type
     return good_block_type
         
