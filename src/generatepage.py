@@ -1,8 +1,7 @@
 import os
 import sys
-from outpututility import init_public_space, prepare_destination_directories, write_html
+from outpututility import prepare_destination_directories, write_html
 from markdown import markdown_to_html_node
-#from htmlnode import HTMLNode
 from texttohtmlnode import extract_title
 
 def generate_page(from_path, template_path, dest_path):
@@ -15,12 +14,13 @@ def generate_page(from_path, template_path, dest_path):
 
     template_html = get_file_content(template_path)
     final_html = fill_in_html_template(template_html, title, html)
-    print(final_html)
+    #print(final_html)
 
-    init_public_space()
     prepare_destination_directories(dest_path)
 
-    write_html(dest_path, final_html)
+    file_name, _ = os.path.splitext(os.path.basename(from_path))
+    file_path = os.path.join(dest_path, f'{file_name}.html')
+    write_html(file_path, final_html)
 
     print('Fini')
 

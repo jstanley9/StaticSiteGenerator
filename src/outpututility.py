@@ -35,7 +35,14 @@ def clear_directory(path):
             os.remove(file_title)
 
 def prepare_destination_directories(dest_path):
-    os.makedirs(os.path.dirname(dest_path), exist_ok = True)
+    start_index = 0
+    if dest_path.startswith('.'):
+        start_index = 1
+        if dest_path.startswith('./'):
+            start_index = 2
+    path = dest_path[start_index:]
+    #print(f'==> MakeDirs({path})')
+    os.makedirs(path, exist_ok = True)
 
 def write_html(dest_path, final_html):
     try:
@@ -59,4 +66,4 @@ def audit_hook(event, args):
     if event in events_monitered:
         print(f'<*** monitered event: {event} :: arguments {args}')
 
-sys.addaudithook(audit_hook)    
+# sys.addaudithook(audit_hook)    

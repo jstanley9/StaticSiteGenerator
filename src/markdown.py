@@ -78,8 +78,9 @@ def make_paragraph_nodes(block):
 
 def make_heading_node(block):
     start_pounds = block.split(' ', 1)
-    heading = f'h{len(start_pounds[0])}'
-    return LeafNode(heading, block[len(start_pounds):])
+    length = len(start_pounds[0])
+    heading = f'h{length}'
+    return ParentNode(heading, make_paragraph_nodes(start_pounds[1]))
 
 def make_code_node(block):
     return ParentNode('pre', [LeafNode('code', block.strip('`'))])

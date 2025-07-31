@@ -1,7 +1,9 @@
 from textnode import TextNode, TextType
-from generatepage import generate_page
+from generatepages import generate_pages_recursive
+from outpututility import init_public_space
 
 def main():
-    generate_page('./content/index.md', './template.html', './public/index.html')
+    init_public_space()
+    generate_pages_recursive('./content', 'template.html', './public')
 
 main()
