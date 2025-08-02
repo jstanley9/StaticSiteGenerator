@@ -4,7 +4,7 @@ from outpututility import prepare_destination_directories, write_html
 from markdown import markdown_to_html_node
 from texttohtmlnode import extract_title
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, basepath):
     print(f'Generating page from {from_path} to {dest_path} using {template_path}')
 
     markdown_text = get_file_content(from_path)
@@ -13,7 +13,7 @@ def generate_page(from_path, template_path, dest_path):
     title = extract_title(from_path)
 
     template_html = get_file_content(template_path)
-    final_html = fill_in_html_template(template_html, title, html)
+    final_html = fill_in_html_template(template_html, title, html, basepath)
     #print(final_html)
 
     prepare_destination_directories(dest_path)
@@ -22,7 +22,7 @@ def generate_page(from_path, template_path, dest_path):
     file_path = os.path.join(dest_path, f'{file_name}.html')
     write_html(file_path, final_html)
 
-    print('Fini')
+    #print('Fini')
 
 def get_file_content(path_name):
     absolute_path = os.path.abspath(path_name)
@@ -41,5 +41,8 @@ def get_file_content(path_name):
 
     sys.exit(1)
 
-def fill_in_html_template(template_html, title, html):
-    return template_html.replace('{{ Title }}', title).replace('{{ Content }}', html)
+def fill_in_html_template(template_html, title, html, basepath):
+    return template_html.replace('{{ Title }}', title). \
+                         replace('{{ Content }}', html). \
+                         replace('href="/', f'href="{basepath}'). \
+                         replace('src="/', f'src="{basepath}')

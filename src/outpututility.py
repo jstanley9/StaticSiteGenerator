@@ -6,9 +6,10 @@ IMAGES_DIRECTORY = 'images'
 TARGET_DIRECTORY = 'public'
 TEMPLATE_DIRECTORY = 'static'
 
-target_directory = os.path.abspath(f'./{TARGET_DIRECTORY}')
+target_directory = os.path.abspath(f'./')
 
-def init_public_space():
+def init_public_space(target_directory):
+    target_directory = os.path.abspath(f'./{target_directory}')
     static_path = os.path.abspath(f'./{TEMPLATE_DIRECTORY}')
 
     clear_directory(target_directory)
@@ -26,13 +27,14 @@ def copy_templates_to_target(static_path, target_directory):
             shutil.copy(source_path, target_directory)
 
 def clear_directory(path):
-    for name in os.listdir(path):
-        file_title = os.path.join(path, name)
-        if os.path.isdir(file_title):
-            clear_directory(file_title)
-            os.rmdir(file_title)
-        else:
-            os.remove(file_title)
+    if os.path.exists(path):
+        for name in os.listdir(path):
+            file_title = os.path.join(path, name)
+            if os.path.isdir(file_title):
+                clear_directory(file_title)
+                os.rmdir(file_title)
+            else:
+                os.remove(file_title)
 
 def prepare_destination_directories(dest_path):
     start_index = 0
@@ -66,4 +68,4 @@ def audit_hook(event, args):
     if event in events_monitered:
         print(f'<*** monitered event: {event} :: arguments {args}')
 
-# sys.addaudithook(audit_hook)    
+sys.addaudithook(audit_hook)    
